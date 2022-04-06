@@ -42,15 +42,6 @@ def cleanData(df):
     # Takes rows where comment is NOT removed or deleted
     df = df[(df['comment_content'] != '[removed]') & (df['comment_content'] != '[deleted]')].reset_index(drop = True)
     
-    # Removing links
-    #re.sub(r"http\S+", "", df[''])
-    
-    # Removing Punctuation besides '!'
-    #re.sub(r'[^\w\s\!]', '', s2)
-    
-    # Removing links and punctuation
-    # re.sub(r'[^\w\s\!\$]|http\S+', '', s2)
-    
     # Use emoji module to create emoji list to keep emojis
     emoji_lst = [i for i in emoji.UNICODE_EMOJI['en']]
     
@@ -94,14 +85,8 @@ def ignoreWords(text):
         'DOW', 'ARE', 'FREE', 'MONEY'
         }
     
-    #text = re.sub('|'.join("((?<=\s)|(?<=^)){}((?=\s)|(?=$))".format(i) for i in ignore_words), '', text)
-    
     # Split the text into a list of words
     text_lst = text.split()
-    
-    # for word in list(text.split()):
-    #     if len(word) > 5 or (not word.isupper() and not word.islower()):
-    #         text_lst.remove(word)
     
     # Loop through the list of words in text
     for word in list(text.split()):
@@ -149,119 +134,12 @@ def stockMatch(df, t_df):
     new DataFrame.
     '''
     
-    
-    # Initialize new column to add data in
-    # df['ticker'] = np.nan
-    
-    #df['title_ticker'] = df['title'].apply(lambda x: x in nasdaq_df['Symbol'].to_list())
-    
-                
-    #df['ticker'] = df['all_content'].map(lambda x: findStock(x.split()))
-    
-    
-    # ignore_words = {
-    #     'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
-    #     'A', 'I', 'U', 'ELON', 'MUSK',  'ETF', 'DFV','CATHIE', 'WOODS', 'TOS', 'ROPE', 'YOLO', 
-    #     'CEO', 'CTO', 'CFO', 'COO', 'DD', 'IT', 'ATH', 'POS',  'IMO', 'RED', 'KMS', 'KYS', 
-    #     'GREEN', 'TLDR', 'LMAO', 'LOL', 'CUNT', 'SUBS', 'USD', 'CPU', 'AT', 'GG', 'AH',
-    #     'AM', 'PM', 'TICK', 'IS', 'EZ', 'RAW', 'ROFL', 'FOMO', 'FBI', 'SEC', 'GOD',
-    #     'CIA', 'LONG', 'SHORT', 'ATM', 'OTM', 'ITM', 'TYS', 'IIRC', 'IIUC', 'PDT',
-    #     'TOS', 'TYS', 'OPEN', 'IRS', 'ALL', 'OK', 'BTFD', 'US', 'USA', 'GDP', 'FD',
-    #     'TL', 'OP', 'PS', 'WTF', 'FOMO', 'CALL', 'PUT', 'BE', 'PR', 'GUH', 'JPOW',
-    #     'BULL', 'BEAR', 'BUY', 'SELL', 'HE', 'ONE', 'OF', 'SHE', 'HODL', 'FINRA',
-    #     'WSB', 'MODS', 'MOD', 'EPS', 'IRA', 'ROTH', 'BS', 'RIP', 'OMG'
-    #     }
-    
-    # tickers = tickers_df['Symbol'].to_list()
-    
-    # df['removed_words'] = df['all_content'].replace(r'[{ignore_words}]'.format(ignore_words = ignore_words), '', regex = True)
-    
-    #df['removed_words'] = df['removed_words'].apply(lambda x: ignoreWords(x))
-    
-    #df['removed_words'] = df['all_content'].str.replace('|'.join("((?<=\s)|(?<=^)){}((?=\s)|(?=$))".format(i) for i in ignore_words), '', regex = True)
-    
-   
-    
-    #re.sub('|'.join("((?<=\s)|(?<=^)){}((?=\s)|(?=$))".format(i) for i in ticker_lst), '', text2)
-    
     # Create a new column called "removed_words" to show the text after all
     # necessary words (ignored_words) are removed
     df['removed_words'] = df['all_content'].map(lambda x: ignoreWords(x))
     
-
-    # print('Just Finished Removing Words')
-    
-    #df['without_ticker'] = df['all_content'].str.replace('|'.join("((?<=\s)|(?<=^)){}((?=\s)|(?=$))".format(i) for i in tickers), '', regex = True)
-    
     # Create a new column called "ticker" to place the ticker identified
     df['ticker'] = df['removed_words'].map(lambda x: stockSearch(x.split(), t_df))
-    
-    
-    # def pattern_searcher(search_str:str, search_list:str):
-
-    # search_obj = re.search(search_list, search_str)
-    # if search_obj :
-    #     return_str = search_str[search_obj.start(): search_obj.end()]
-    # else:
-    #     return_str = 'NA'
-    # return return_str
-    #df['all_tickers'] = reddit_df['removed_words'].replace(r'[^{tickers}]'.format(tickers = tickers), '', regex = True)
-    
-    #df['tickers'] = reddit_df['all_tickers'].map(lambda x: ignoreWords(x))
-    
-    
-    # re.sub(r'[^\s|{tickers}]'.format(tickers = tickers), '', text)
-    
-    # re.sub(r'[^\s|AAPL|TSLA]', '', text)
-    
-    # conditions = list(map(df['removed_words'].str.contains, list(tickers_df.Symbol)))
-    # reddit_df['tickers'] = np.select(conditions, list(tickers_df.Symbol), np.nan)
-    
-    # for row in range(len(df)):
-        
-    #     text_lst = df['title'].iat[row].split()
-        
-    #     for word in list(text_lst):
-    #         if word in ignore_words:
-    #             text_lst.remove(word)
-                
-    #     for stock in tickers_df['Symbol'].to_list():
-    #         if stock in text_lst:
-    #             df['all_content'].iloc[row] = stock
-    #             break
-            
-        # for word in text_lst:
-        #     if word in tickers_df['Symbol'].to_list():
-        #         df['title_ticker'].iloc[row] = word
-        #         break
-            
-        
-        # for word in df['title'].iat[row].split():
-        #     # print(df['title'].iat[row].split()
-        #     if word in tickers_df['Symbol'].to_list():
-        #         # print(word)
-        #         # print(row)
-        #         df['title_ticker'].iloc[row] = word
-        #         break
-        
-    
-        
-            # else:
-            #     df['title_ticker'].iloc[row] = np.nan
-                
-            # else:
-            #     title_lst.append([np.nan])
-    
-    #ticker_lst = df['title'].map(lambda word: word if word in nasdaq_df['Symbol'].values)
-    
-    # for row in range(len(df)):
-        
-    #     for word in df['title'].iat[row]:
-            
-    #         if word.upper() == nasdaq_df['Symbol'].values:
-                
-    # print(lst)
-    # df['title_ticker'] = lst
     
     # Only takes rows where a stock ticker has been identified
     df = df[df['ticker'].notna()].reset_index(drop = True)
