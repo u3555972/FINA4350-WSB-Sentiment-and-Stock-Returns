@@ -7,6 +7,6 @@ This project aims to analyze the correlation between the sentiment of r/wallstre
 # Steps
 1. Data Sourcing Reddit Posts
 2. Cleaning Data and Identifying Stock
-3. Applying Sentiment Analysis
+3. Conducting Sentiment Analysis
 4. Visualizing Correlation and Prediction
 
