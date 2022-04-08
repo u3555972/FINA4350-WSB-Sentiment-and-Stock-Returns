@@ -326,4 +326,4 @@ I did not use the APRAW library, which is the async version of the PRAW library 
 
 #### Finally, thank you for your reading :>
 
-Link to code can be found here: [reddit_data_scraping](https://github.com/u3555972/FINA4350-WSB-Sentiment-and-Stock-Returns/blob/main/reddit_data_scraping.py)
+*Link to code can be found here:* [reddit_data_scraping](https://github.com/u3555972/FINA4350-WSB-Sentiment-and-Stock-Returns/blob/main/reddit_data_scraping.py)
