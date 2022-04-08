@@ -30,7 +30,7 @@ Pail, Hung Pui Kit, a second-year Economics and Finance student, in charge of th
 
 This project begins with scraping Reddit data, therefore the first step is to figure out how to scrape the raw data, then arrange it in a tabular data frame, and export it to a csv file for further processing by other colleagues.
 
-The first step is to scrape data by Reddit's API using the PRAW library, with the following basic codes:
+The first step is to scrape data by Reddit's API using the PRAW library, with the following basic code:
 
 ```python
 import praw
@@ -59,22 +59,18 @@ for submission in subreddit.hot(limit=None):
 posts_df = pd.DataFrame(posts,columns=[‘title’, ‘score’, ‘id’, ‘url’])
 ```
 
-With these few lines, I successfully done the following tasks:
+With these few lines, I have successfully done the following tasks:
 
 - Gain access to Reddit Post Data via API
+- Scrape something down with my code
   
-- Scrape something down with my lines
-  
-- Many
-  
-
 However, there are certain limitations, such as the fact that I can only gather the most popular entries, with a limit of roughly 300 submissions, which is insufficient to construct a data pool for further research.
 
 ## Step 2: Find the ways to collect posts with a specific time range
 
-Because that using the PRAW library alone was not enough to acquire data, I spend some hours browsing.
+Because using the PRAW library alone was not enough to acquire data, I spent some hours browsing.
 
-The document have the following codes:
+The next part has the following code:
 
 ```python
 # assume you have a praw.Reddit instance bound to variable `reddit`
@@ -84,7 +80,7 @@ print(submission.title)
 
 I can find the required submissions using the submission id. So, I should look for a way to scrape the submission id first in a certain timeframe. With further research, another library, the PSAW library, which used the PushShift API, is specifically used for locating IDs within a certain timerange.
 
-That's exactly what I needed, so I glanced its docs and copied the following:
+That's exactly what I needed, so I referred to its documentation and copied the following:
 
 ```python
 import praw
@@ -102,7 +98,7 @@ list(api.search_submissions(after=start_epoch,
                             limit=10))
 ```
 
-We can find the timerange limit variables here, which can specify the subreddit, but there is one minor issue: when limit='None,' which tells the code to scrape all the posts without any further limits like the filter or score below, the code will run slowly and sometimes even fails to generate the result, so I modified the code as shown:
+We can find the timerange limit variables here which can specify the subreddit, but there is one minor issue: when limit='None'. This tells the code to scrape all the posts without any further limits like the filter or score below. The code will run slowly and sometimes even fail to generate the result, so I modified the code as shown:
 
 ```python
 import praw
@@ -135,9 +131,9 @@ Progress Done:
 
 ## Step 3: To collect more data: the comments
 
-Aside from the contents of the post, the comments are also significant since they provide a lot of useful text sources that can assist my colleagues have more analytics sources.
+Aside from the contents of the post, the comments are also significant since they provide a lot of useful text sources that can assist my colleagues.
 
-I return to the PRAW documentation. And the following codes were discovered:
+I return to the PRAW documentation. And the following code were discovered:
 
 ```python
 from praw.models import MoreComments
@@ -150,9 +146,9 @@ for top_level_comment in submission.comments:
 
 > While running this you will most likely encounter the exception `AttributeError: 'MoreComments' object has no attribute 'body'`. This submission’s comment forest contains a number of [`MoreComments`](https://praw.readthedocs.io/en/latest/code_overview/models/more.html#praw.models.MoreComments "praw.models.MoreComments") objects. These objects represent the “load more comments”, and “continue this thread” links encountered on the website. While we could ignore [`MoreComments`](https://praw.readthedocs.io/en/latest/code_overview/models/more.html#praw.models.MoreComments "praw.models.MoreComments") in our code
 
-It appears that I need to deal with the 'MoreComments' object, which represents sub-comments or comments of a comment, based on this explanation. I am not familiar with it, but based on the example codes, it looks like I will need to skip it if I come across it.
+It appears that I need to deal with the 'MoreComments' object, which represents sub-comments or comments of a comment, based on this explanation. I am not familiar with it, but based on the example code, it looks like I will need to skip it if I come across it.
 
-I started to think the layer of collecting the posts and comments data:
+I started to think about the layers of collecting the posts and comments data:
 
 1. I have a lot of submission IDs.
   
@@ -161,7 +157,7 @@ I started to think the layer of collecting the posts and comments data:
 
 I divided the collections into two dataframes, one for post information and the other for comment details, and then merged them based on the post id.
 
-Because a post will only have identical main content like the post id, post content, or post topic (the right dataframe here), but it can have an unlimited number of comments (the left dataframe), I will merge them later by broadcasting the post data to merge with comment data based on the identical post id (key column), to keep all the data in the same dataframe
+Because a post will only have identical main content like the post id, post content, or post topic (the right dataframe here), but it can have an unlimited number of comments (the left dataframe), I will merge them later by broadcasting the post data to merge with comment data based on the identical post id (key column), to keep all the data in the same dataframe.
 
 ![images/mergingjoinkeycolumnspng](https://pandas.pydata.org/pandas-docs/version/0.18.1/_images/merging_join_key_columns.png)
 
@@ -248,7 +244,7 @@ Up to here, the data scraping process is nearly done, with the following tasks c
   
 - Use the IDs to scrape the comments details
   
-- Merge the two dataframe
+- Merge the two dataframes
   
 
 ## Step 5: Export and Data Pre-processing
@@ -285,9 +281,9 @@ mod_name = 'Reddit WSB Data with most upvote comments ' + from_date + ' to ' + t
 posts_mod.to_csv(os.path.join(base_path, mod_name), index=False)
 ```
 
-## Extra Step: Let the codes run remotely
+## Extra Step: Let the code run remotely
 
-Because the time needed to scrape Reddit submissions is rather long owing to Reddit's API connection limit, I installed a docker image on another machine so the programs could execute remotely. Also, I wrote a function to determine how much time has gone. Furthermore, in my scripts, the essential variables that need to be altered when the codes run locally and remotely are clearly visible and modifiable.
+Because the time needed to scrape Reddit submissions is rather long owing to Reddit's API connection limit, I installed a docker image on another machine so the program could execute remotely. Also, I wrote a function to determine how much time has passed. Furthermore, in my scripts, the essential variables that need to be altered when the codes run locally and remotely are clearly visible and modifiable.
 
 ```python
 start_time = dt.datetime.now() 
@@ -302,7 +298,7 @@ start_scrap = dt.datetime(2021, 1, 1)
 end_scrap = dt.datetime(2021, 12, 31)
 ```
 
-So I can add 'time report()' anywhere in my code and it will print the time spent.
+So I can add 'time report()' anywhere in my code and it will print the time passed.
 
 ## One more thing: metadata on writing a pelican post
 
@@ -312,17 +308,17 @@ Date: 2022-03-29 10:20
 Category: Progress Report
 ```
 
-In order for pelican to recognize this markdown file, the metadata should begin on the first line of the markdown file. I spent quite a lot of time to have trial and error process to locate this issue.
+In order for pelican to recognize this markdown file, the metadata should begin on the first line of the markdown file. I spent quite a lot of time doing a *trial and error* process to identify this issue.
 
 ## Final: Feelings and Further Improvements
 
-The slow API that gets the post id is basically my biggest opponent while I am developing. It took me around 8.5 hours to gather 83000 submission ids, and 2 days and 7 hours to collect all of the data in total. As a result, each time I edit the codes and evaluate the produced data, I have to wait a long time.
+The slow API that gets the post id is basically my biggest opponent while I was developing my program. It took me around 8.5 hours to gather 83000 submission ids, and 2 days and 7 hours to collect all of the data in total. As a result, each time I edit the codes and evaluate the produced data, I have to wait a long time.
 
 Returning to the code, it took 90-100 lines to complete the task, which I believe is moderate. Although my coding style is a little wordy, with transition variables that are only used once, it just makes it easier for me to understand what I have written after a day, and the nature of scraping data does not emphasize the script's operation speed, which was limited by the API already.
 
 ### Improvements
 
-I did not use the APRAW library, which is the async version of the PRAW library that can scrape the Reddit post details much faster, because I am not familiar with the async and await functions, and the slowest part, collecting post ids, is handled by the PSAW library, which is dependent on the PRAW library, so the APRAW library can only be used in the collecting details part, which I believe the improvement in performance is not that significant.
+I did not use the APRAW library, which is the async version of the PRAW library that can scrape the Reddit post details much faster. Because I am not familiar with the *async* and *await* functions, and the slowest part, collecting post ids, is handled by the PSAW library which is dependent on the PRAW library, the APRAW library can only be used in the collecting details part, which I believe will result in only incremental efficiency.
 
 #### Finally, thank you for your reading :>
 
