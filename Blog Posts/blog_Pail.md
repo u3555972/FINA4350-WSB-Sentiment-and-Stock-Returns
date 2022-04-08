@@ -8,7 +8,7 @@ By: Hung, Pui Kit Pail
 
 ## Project Introduction
 
-Here at Group Simplicity, we are working together on an investigation on the relationship between the sentiment expressed on Reddit's r/wallstreetbets community and stock market performance. We will look at the submission data's title, content, and the most popular comment. When evaluating individual posts, we discovered that the most popular comment can often be a discussion of the image. Identifying the stocks mentioned in the post, running VADER sentiment analysis on it, and then visualizing the correlation were other goals.
+Here at Group Simplicity, we are working together on an investigation on the relationship between the sentiment expressed on Reddit's r/wallstreetbets community and stock market performance. We will look at the submission data's title, content, and the most popular comment. When evaluating individual posts, we discovered that the most popular comment can often be a discussion of the image. Additionally, we will be identifying the stock mentioned in the post, running VADER sentiment analysis on it, and then visualizing the correlation.
 
 ### Project Overview
 
@@ -28,9 +28,9 @@ Pail, Hung Pui Kit, a second-year Economics and Finance student, in charge of th
 
 ## Step 1 : Decide the workflow and search for codes
 
-This project begins with scraping Reddit data, therefore the first step is to figure out how to scrape the raw data, then arrange it in a tabular data frame, and export it to a csv file for further processing by other colleagues.
+This project begins with scraping Reddit's data, therefore making the first step figuring out how to scrape the raw data, arranging it in a tabular data frame, and exporting it as a csv file for further processing by other colleagues.
 
-The first step is to scrape data by Reddit's API using the PRAW library, with the following basic code:
+The first step of scraping data from Reddit's API using the PRAW library is done with the following basic code:
 
 ```python
 import praw
@@ -78,7 +78,7 @@ submission = reddit.submission("39zje0")
 print(submission.title)
 ```
 
-I can find the required submissions using the submission id. So, I should look for a way to scrape the submission id first in a certain timeframe. With further research, another library, the PSAW library, which used the PushShift API, is specifically used for locating IDs within a certain timerange.
+I can find the required submissions using the submission id, so looking for a way to scrape the submission id first in a certain timeframe should be the next step. With further research, I found that the PSAW library, another library which uses the PushShift API, is specifically used for locating IDs within a certain timerange.
 
 That's exactly what I needed, so I referred to its documentation and copied the following:
 
@@ -98,7 +98,7 @@ list(api.search_submissions(after=start_epoch,
                             limit=10))
 ```
 
-We can find the timerange limit variables here which can specify the subreddit, but there is one minor issue: when limit='None'. This tells the code to scrape all the posts without any further limits like the filter or score below. The code will run slowly and sometimes even fail to generate the result, so I modified the code as shown:
+Here, we can find the timerange limit variables which can specify the subreddit, but there is one minor issue that happens when limit='None'. This tells the code to scrape all the posts without any further limits like the filter or score below. The code will run slowly and sometimes even fail to generate the result, so I modified the code as shown:
 
 ```python
 import praw
@@ -131,9 +131,9 @@ Progress Done:
 
 ## Step 3: To collect more data: the comments
 
-Aside from the contents of the post, the comments are also significant since they provide a lot of useful text sources that can assist my colleagues.
+Aside from the contents of the post, the comments are also significant since it provides a lot of useful text that can assist my colleagues.
 
-I return to the PRAW documentation. And the following code were discovered:
+Returning to the PRAW documentation, the following code was discovered:
 
 ```python
 from praw.models import MoreComments
@@ -157,7 +157,7 @@ I started to think about the layers of collecting the posts and comments data:
 
 I divided the collections into two dataframes, one for post information and the other for comment details, and then merged them based on the post id.
 
-Because a post will only have identical main content like the post id, post content, or post topic (the right dataframe here), but it can have an unlimited number of comments (the left dataframe), I will merge them later by broadcasting the post data to merge with comment data based on the identical post id (key column), to keep all the data in the same dataframe.
+Since a post has identical identifiers like the post id, post content, or post topic (the right dataframe here), but it can also have an unlimited number of comments (the left dataframe), I will need to merge them later by broadcasting the post data to merge with comment data based on the post id (key column) to keep all the data in the same dataframe.
 
 ![images/mergingjoinkeycolumnspng](https://pandas.pydata.org/pandas-docs/version/0.18.1/_images/merging_join_key_columns.png)
 
@@ -251,7 +251,7 @@ Up to here, the data scraping process is nearly done, with the following tasks c
 
 Now that I have scraped all of the posts inside a specified timeframe, it is time to export the dataframe to a csv file and distribute it to my colleagues. There will be two versions available: one with all the data and one with only the posts with more than 5 upvotes and the highest upvoted comments.
 
-Also, in order to handle the files simply, I set the export name to be linked to the timeframe I collected.
+Also, in order to simplify the handling of files, I set the export name to be linked to the timeframe I collected.
 
 ```python
 base_path = '*the export folder path*'
@@ -312,9 +312,9 @@ In order for pelican to recognize this markdown file, the metadata should begin 
 
 ## Final: Feelings and Further Improvements
 
-The slow API that gets the post id is basically my biggest opponent while I was developing my program. It took me around 8.5 hours to gather 83000 submission ids, and 2 days and 7 hours to collect all of the data in total. As a result, each time I edit the codes and evaluate the produced data, I have to wait a long time.
+The slow API that gets the post id is basically my biggest opponent while I was developing my program. It took me around 8.5 hours to gather 83000 submission ids, and 2 days and 7 hours to collect all of the data in total. As a result, each time I edited the code and evaluated the produced data, I had to wait a long time.
 
-Returning to the code, it took 90-100 lines to complete the task, which I believe is moderate. Although my coding style is a little wordy, with transition variables that are only used once, it just makes it easier for me to understand what I have written after a day, and the nature of scraping data does not emphasize the script's operation speed, which was limited by the API already.
+Returning to the code, it took 90-100 lines to complete the task, which I believe is moderate. Although my coding style is a little wordy, with transition variables that are only used once, it made it easier for me to understand what I had written after a day, and the nature of scraping data does not emphasize the script's operation speed, which was limited by the API already.
 
 ### Improvements
 
