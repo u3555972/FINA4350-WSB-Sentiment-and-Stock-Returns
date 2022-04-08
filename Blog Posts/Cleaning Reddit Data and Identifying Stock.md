@@ -92,7 +92,7 @@ main()
 
 ## Combine Reddit CSV Files into One DataFrame
 
-At first, I was  unsure whether or not to combine all the Reddit CSV files and then clean, or clean them individually first, then combine. However, I decided to combine them first because it would mean all the data was within one DataFrame instead of multiple ones, making it cleaner and easier to work with even if it may take longer.
+At first, I was  unsure whether or not to combine all the Reddit CSV files and then clean, or clean them individually first, and then combine. However, I decided to combine them first because it would mean all the data was within one DataFrame instead of multiple ones, making it cleaner and easier to work with even if it may take longer.
 
 ***Function to Combine (Concatenate) CSV Files***
 
@@ -111,12 +111,12 @@ def combineDF(df_lst):
 
 ## Cleaning Data
 
-Cleaning data in our case means:
+Cleaning data in our case means to:
 
 1. Remove any row where the Title, Content, or Comment is identified as deleted, removed, or deleted by user
 2. Remove any punctuation besides ‘!’, links, line spaces, usernames or subreddits mentioned in the Title, Content, and Comment. We keep '!' because it affects the sentiment.
 
-To complete 1., I could easily just take the rows where the Title of the post was '[deleted by user]' instead of removing the rows. I made sure to reset the index and drop the old index column so that the DataFrame is cleaner. Then, I repeated this step for Content and Comment columns. However, the content and comment have a different identification method for a post that was removed or deleted, which were '[removed]' and '[deleted]'', respectively. Thus, for the text in the Title, Content, and Comment columns, I only took the valid ones.
+To complete 1., I could easily just take the rows where the Title of the post was '[deleted by user]' instead of removing the rows. I made sure to reset the index and drop the old index column so that the DataFrame is cleaner. Then, I repeated this step for Content and Comment columns. However, the content and comment columns have a different identification method for a post that was removed or deleted, which is displayed as '[removed]' and '[deleted]', respectively. Thus, for the text in the Title, Content, and Comment columns, I only took the valid ones.
 
 ***Function to Clean Data: Taking Non-Deleted Posts***
 
@@ -146,7 +146,7 @@ Additionally, I had to keep the emojis and used the emoji module to create a lis
 
 I found a faster way by directly using df.Column.replace, which uses Series operation which should be faster than using .map(). To remove everything else besides the data we wanted to keep, I did the inverse of the usual Series.replace(). Everything within the brackets ‘[^ ]’ would be protected, and anything outside specifically mentioned will be replaced with an empty string. I learned that we could also add specific strings to be protected if it’s delimited by a ‘|’, hence the earlier joining of emojis to protect them. For the characters that would be deleted, it would only delete that specific character, but I learned that we needed to add the ‘\S+’ to indicate that any non-space character followed by it will also be replaced.
 
-Finally, I would combine all the text within the three columns into one column. This will be needed to identify which stock is being discussed in the text. However, since we are taking the first stock mentioned, I decided to combine them on the order of Title, Content, Comment, as I assumed that the stock being discussed will be mentioned in the Title first. If not, it should be in the Content followed by the Comment. 
+Finally, I would combine all the text within the three columns into one column. This will be needed to identify which stock is being discussed in the text. However, since we are taking the first stock mentioned, I decided to combine them in the order of Title, Content, Comment, as I assumed that the stock being discussed will be mentioned in the Title first. If not, it should be in the Content followed by the Comment. 
 
 ***Function to Clean Data Continued: Keeping Only Words and Emojis (and '!')***
 
@@ -194,7 +194,7 @@ I read all the Stock CSV files and combined them into a single DataFrame to make
 To match the stock mentioned in the text:
 
 1. Ignore some characters/words such as “I” or “ETF” so that it will not be confused with actual stock tickers
-2. Match the first stock ticker mentioned in the text to a list of stock tickers from the Stock CSV DataFrame.
+2. Match the first stock ticker mentioned in the text to a list of stock tickers from the Stock CSV DataFrame
 3. Create a new column with the stock ticker identified and remove those without a stock ticker identified
 
 ***Function to Match Stock***
@@ -222,7 +222,7 @@ def stockMatch(df, t_df):
     return df
 ```
 
-Initially, I used a nested loop to loop through the whole DataFrame and loop the text and match each word individually to a ticker in a list of stock tickers (while ignoring words that could be confused as stocks). However, that took way too long. Thus, I decided to create a new column where only the valid words will remain, meaning I removed all the words that will be ignored. However, using a regular for loop still took quite a long time. 
+Initially, I used a nested loop to loop through the whole DataFrame and loop the text and match each word individually to a ticker in a list of stock tickers (while ignoring words that could be confused as stocks). However, that took way too long. Thus, I decided to create a new column where only the valid words would remain, meaning I had removed all the words that would be ignored. However, using a regular for loop still took quite a long time. 
 
 I initially re-used Series operation, i.e. df.Column.replace, creating a list of words to ignore, joining them with a ‘|’ delimiter, thus matching and replacing them with an empty string, effectively removing them. Strangely, it took too long for the program to run so I decided to pursue another method.
 
@@ -278,7 +278,7 @@ def ignoreWords(text):
 
 ## Stock Searching
 
-Following my previous method, I also created a new function called stockSearch(text_lst, t_df). If there is no text, it will return NaN and if there are word(s), then it will compare it to a list of stock tickers. Since we only want the first stock mentioned, I used the break option even though it might not be elegant. The remaining text (after ignoreWords(text)) was mapped to this function.
+Following my previous method, I also created a new function called stockSearch(text_lst, t_df). If there is no text, it would return NaN and if there are word(s), then it would compare it to a list of stock tickers. Since we only want the first stock mentioned, I used the break option even though it might not be elegant. The remaining text (after ignoreWords(text)) was mapped to this function.
 
 ***Function to Search for Stock Tickers***
 
@@ -359,7 +359,7 @@ An example of the CSV file:
 
 ## Final Thoughts
 
-I found the data cleaning part relatively easier than identifying a stock. The main difficulty came from using conventional methods such as Series operations, for some reason, was slower than mapping a column to a function. Additionally, it was just more complex to identify a stock until I realized that the stock ticker mentioned must always be uppercase. However, I realize that my code can always be improved in terms of speed, perhaps using vector-based operations would make it more efficient.
+I found the data cleaning part relatively easier than identifying a stock. The main difficulty came from using conventional methods such as Series operations, which, for some reason, was slower than mapping a column to a function. Additionally, it was just more complex to identify a stock until I realized that the stock ticker mentioned must always be uppercase. However, I realize that my code can always be improved in terms of speed, perhaps using vector-based operations would make it more efficient.
 
 To be sure, this was quite a challenging experience trying to find methods to identify the stock. I was stuck for more than a day doing this, surfing through *StackOverflow* for the best method. At the end, my bad practice of using for loops actually ended up solving the problem of speed and extracting the correct information for me! 
 
