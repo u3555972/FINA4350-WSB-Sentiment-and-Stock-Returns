@@ -2,9 +2,13 @@ Title: Project Introduction and Step 1: Data Collecting and Storage
 Date: 2022-03-29 10:20
 Category: Progress Report
 
+Simplicity
+
+By: Hung, Pui Kit Pail
+
 ## Project Introduction
 
-Here at Group Simplicity, we are working together on an investigation on the relationship between the sentiment expressed on Reddit's r/wallstreetbets community and stock market performance. We will look at the submission data's title, content, and the most popular response. When evaluating individual postings, we discovered that the most popular response can often be a discussion of the image. Identifying the stocks mentioned in the post, running VADER sentiment analysis on it, and then visualizing the correlation were another goals.
+Here at Group Simplicity, we are working together on an investigation on the relationship between the sentiment expressed on Reddit's r/wallstreetbets community and stock market performance. We will look at the submission data's title, content, and the most popular comment. When evaluating individual posts, we discovered that the most popular comment can often be a discussion of the image. Identifying the stocks mentioned in the post, running VADER sentiment analysis on it, and then visualizing the correlation were other goals.
 
 ### Project Overview
 
@@ -24,7 +28,7 @@ Pail, Hung Pui Kit, a second-year Economics and Finance student, in charge of th
 
 ## Step 1 : Decide the workflow and search for codes
 
-This project begins with scraping Reddit data, therefore the first step is to figure out how to scrape the raw data down, then arrange it in a tabular data frame and export it to a csv file for further processing by other colleagues.
+This project begins with scraping Reddit data, therefore the first step is to figure out how to scrape the raw data, then arrange it in a tabular data frame, and export it to a csv file for further processing by other colleagues.
 
 The first step is to scrape data by Reddit's API using the PRAW library, with the following basic codes:
 
@@ -78,7 +82,7 @@ submission = reddit.submission("39zje0")
 print(submission.title)
 ```
 
-I can find the required submissions using the submission id. So I should look for a way to scrape the submission id first in a certain timeframe. With further research, another library, the PSAW library, which used the PushShift API, is specifically used for locating IDs within a certain timerange.
+I can find the required submissions using the submission id. So, I should look for a way to scrape the submission id first in a certain timeframe. With further research, another library, the PSAW library, which used the PushShift API, is specifically used for locating IDs within a certain timerange.
 
 That's exactly what I needed, so I glanced its docs and copied the following:
 
@@ -98,7 +102,7 @@ list(api.search_submissions(after=start_epoch,
                             limit=10))
 ```
 
-We can find the timerange limit variables here, which can specify the subreddit, but there is one minor issue: when limit='None,' which tells the code to scrape all the posts without any further limits like the filter or score below, the codes will run slowly and sometimes even fails to generate the result, so I modified the codes as follows:
+We can find the timerange limit variables here, which can specify the subreddit, but there is one minor issue: when limit='None,' which tells the code to scrape all the posts without any further limits like the filter or score below, the code will run slowly and sometimes even fails to generate the result, so I modified the code as shown:
 
 ```python
 import praw
@@ -122,7 +126,7 @@ submissions = list(submissions_generator)
 
 With these lines, the submission ids will be gathered into a list, and I will be able to scrape the details later using the PRAW library.
 
-Progress Done here:
+Progress Done:
 
 - Ways to collect required submission ids found
   
@@ -161,7 +165,7 @@ Because a post will only have identical main content like the post id, post co
 
 ![images/mergingjoinkeycolumnspng](https://pandas.pydata.org/pandas-docs/version/0.18.1/_images/merging_join_key_columns.png)
 
-So I write the following lines:
+So I wrote the following lines:
 
 ```python
 # 2. Use the PRAW library to scrap post details
