@@ -25,8 +25,8 @@ base_path = 'custom-defined export location'
 
 
 # Key Variables #
-start_scrap = dt.datetime(2021, 1, 1)
-end_scrap = dt.datetime(2021, 12, 31)
+start_scrape = dt.datetime(2021, 1, 1)
+end_scrape = dt.datetime(2021, 12, 31)
 start_time = dt.datetime.now() 
 print('done')
 
@@ -40,11 +40,11 @@ reddit = praw.Reddit(client_id='get it from reddit panel',
 
 api = PushshiftAPI(reddit)
 
-start_epoch=int(start_scrap.timestamp()) 
-end_epoch=int(end_scrap.timestamp())
+start_epoch=int(start_scrape.timestamp()) 
+end_epoch=int(end_scrape.timestamp())
 
-from_date = start_scrap.strftime('%Y-%m-%d')
-to_date = end_scrap.strftime('%Y-%m-%d')
+from_date = start_scrape.strftime('%Y-%m-%d')
+to_date = end_scrape.strftime('%Y-%m-%d')
 
 # time report
 time_report()
@@ -59,7 +59,7 @@ print('running, please wait')
 submissions_generator = api.search_submissions(after=start_epoch,
                                                before=end_epoch,
                                                subreddit='wallstreetbets',
-                                               limit= None, #Scrap all posts
+                                               limit= None, #Scrape all posts
                                                score = ">1" #minimum upvote amount
                                                ) 
 # return a list with post IDs
@@ -69,7 +69,7 @@ time_report()
 print(len(submissions),'ID collected \n')
 
 
-# 2. Use the PRAW library to scrap post details
+# 2. Use the PRAW library to scrape post details
 posts = []
 count = 0
 comments_list = []
@@ -80,7 +80,7 @@ for submission_id in submissions:
     comments_details = []
     
 
-    # Scrap Comments
+    # Scrape Comments
     for top_level_comment in post.comments:
         
         if isinstance(top_level_comment, MoreComments):
@@ -102,7 +102,7 @@ for submission_id in submissions:
                                  top_level_comment.body,
                                  post.id])
 
-    # Scrap other post details
+    # Scrape other post details
     post_items.extend([post.id, post.created_utc, post.author, post.score,
                        post.num_crossposts, post.num_comments, post.upvote_ratio,
                        post.title, post.selftext, post.url, post.permalink])
