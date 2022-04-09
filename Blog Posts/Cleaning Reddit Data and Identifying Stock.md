@@ -269,7 +269,10 @@ def ignoreWords(text):
         # Greater than 5 (length of stock ticker)
         # Word in ignore_words set
         # Not lower or uppercase words (e.g. Last) and not lowercase words
-        if len(word) > 5 or word in ignore_words or (not word.isupper() and not word.islower()) or word.islower():
+        if (len(word) > 5 
+            or word in ignore_words 
+            or (not word.isupper() and not word.islower()) 
+            or word.islower()):
             text_lst.remove(word)
 
     # Returns a string after joining the list of words in text
