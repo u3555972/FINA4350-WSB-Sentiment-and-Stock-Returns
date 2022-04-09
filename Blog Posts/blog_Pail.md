@@ -90,16 +90,15 @@ import datetime as dt
 reddit = praw.Reddit(...)
 api = PushshiftAPI(reddit)
 
-start_epoch=int(dt.datetime(2017, 1, 1).timestamp())
+start_epoch=int(dt.datetime(2017, 1, 1).timestamp()) #timerange limit : from where to scrape?
 
 list(api.search_submissions(after=start_epoch,
                             subreddit='politics',
-                            filter=['url','author', 'title', 'subreddit'],
-                            limit=10))
+                            filter=['url','author', 'title', 'subreddit'], #scrape which columns?
+                            limit=10)) #scrape how many posts?
 ```
 
-Here, we can find the timerange limit variables which can specify the subreddit, but there is one minor issue that happens when limit='None'. This tells the code to scrape all the posts without any further limits like the filter or score below. The code will run slowly and sometimes even fail to generate the result, so I modified the code as shown:
-
+We can see from the example codes that timerange limit variables exist(start_epoch), as well as define the subreddit and the columns (filter) we want to scrape. However, there is a minor issue when the limit is set to 'None'. Scraping all posts without any further restrictions is what this parameter tells the programs to do. As a result, the code will run slowly and fail to produce a result on occasion, so I made the following modifications:
 ```python
 import praw
 from psaw import PushshiftAPI
@@ -108,19 +107,19 @@ import datetime as dt
 reddit = praw.Reddit(...)
 api = PushshiftAPI(reddit)
 
-start_epoch=int(dt.datetime(2021, 11, 1).timestamp()) 
-end_epoch=int(dt.datetime(2021, 11, 30).timestamp())
+start_epoch=int(dt.datetime(2021, 11, 1).timestamp()) #timerange limit : from where to scrape?
+end_epoch=int(dt.datetime(2021, 11, 30).timestamp()) #timerange limit: scrape until when
 
 submissions_generator = api.search_submissions(after=start_epoch,
                                                before=end_epoch,
                                                subreddit='wallstreetbets',
-                                               limit= None,
-                                               score = ">1"
+                                               limit= None, #scrape all posts, no count limit
+                                               score = ">1" #post upvote should >1
                                                ) 
 submissions = list(submissions_generator)
 ```
 
-With these lines, the submission ids will be gathered into a list, and I will be able to scrape the details later using the PRAW library.
+With these lines, the submission ids will be gathered into a list, and I will be able to scrape the details later using the PRAW library, so I did not include the filter parameter, just scraping the ID will be fine.
 
 Progress Done:
 
