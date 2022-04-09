@@ -71,7 +71,7 @@ posts_df = pd.DataFrame(posts,columns=[‘title’, ‘score’, ‘id’, ‘ur
 With these few lines, I have successfully done the following tasks:
 
 - Gain access to Reddit Post Data via API
-- Scrape the relevant attributes of the tweets 
+- Scrape the relevant attributes of the posts 
   
 However, there are certain limitations, such as the fact that I can only gather the most popular entries, with a limit of roughly 300 submissions, which is insufficient to construct a data pool for further research.
 
@@ -100,12 +100,13 @@ import datetime as dt
 reddit = praw.Reddit(...)
 api = PushshiftAPI(reddit)
 
+# scrape from when
 start_epoch=int(dt.datetime(2017, 1, 1).timestamp())
 
 list(api.search_submissions(after=start_epoch,
                             subreddit='politics',
-                            filter=['url','author', 'title', 'subreddit'],
-                            limit=10))
+                            filter=['url','author', 'title', 'subreddit'], # scrape which columns
+                            limit=10)) # scrape how many posts
 ```
 
 From the above reference, we can observe the existence of the timerange variables, which can help specify the required start and end points of scraping. The "filter" variable enables one to specify what attributes of the posts one wants to scrape, but since I only want the submission ID, I can get rid of it. However, there is one minor issue that I came across which is when limit='None'. It tells the code to scrape all the posts without any limits. The code will run slowly and sometimes even fail to generate any results, so I modified the code by adding the "score" variable which allows me to only scrape the submission IDs of posts that have more than 1 upvote. The code is as follows:
@@ -118,6 +119,7 @@ import datetime as dt
 reddit = praw.Reddit(...)
 api = PushshiftAPI(reddit)
 
+# scrape from when until when (2021-11-1 to 2021-11-30 in this case)
 start_epoch=int(dt.datetime(2021, 11, 1).timestamp()) 
 end_epoch=int(dt.datetime(2021, 11, 30).timestamp())
 
