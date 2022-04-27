@@ -11,6 +11,7 @@ pd.options.mode.chained_assignment = None
 import matplotlib.pyplot as plt
 import textcleaner as tc
 import numpy as np
+import math
 import os
 from wordcloud import WordCloud
 
@@ -104,10 +105,10 @@ def buy_sell_WSB(signal):
             if flag != 0:  # previous action not sell
                 Sell.append(process_df['close'][i])  # mark item
                 flag = 0  # mark action as buy
-                # collect data for analysis later
+                # collect data for analysis later (Reverse Trading)
                 WSB_result.append({
                     'date': process_df['Date'][i],
-                    'action': 'sell',
+                    'action': 'buy',
                     'price': process_df['close'][i]
                 })
             else:  # previous action is sell
@@ -120,10 +121,10 @@ def buy_sell_WSB(signal):
                 if flag != 1:  # previous action not buy
                     buy.append(process_df['close'][i])  # mark item
                     flag = 1  # mark action as buy
-                    # collect data for analysis later
+                    # collect data for analysis later (Reverse trading)
                     WSB_result.append({
                         'date': process_df['Date'][i],
-                        'action': 'buy',
+                        'action': 'sell',
                         'price': process_df['close'][i]
                     })
                 else:  # previous action is buy
@@ -232,10 +233,8 @@ print('return is ' + str(stronghold_return) + '\n')
 
 
 
-'''
-## Codes that are not used now ##
 
-# analysis the data collected from func_result
+# Reverse Trading Analysis
 def result_summary(signals):
     pairs = zip(*[iter(signals)] * 2)  # unpack the dictionary
     # initialize
@@ -283,7 +282,7 @@ def result_summary(signals):
 WSB_summary = result_summary(WSB_result)
 
 # export txt analysis
-txtname = str(ticker_required) + ' ' + str(start_date) + ' to ' + str(
+txtname ='Reverse ' + str(ticker_required) + ' ' + str(start_date) + ' to ' + str(
     end_date) + ' Results.txt'
 
 txt_loc = os.path.join(mypath, txtname)
@@ -300,5 +299,7 @@ f.write('\n')
 f.close()
 
 print(WSB_summary + '\n')
+
+'''
 tickers = list(set(rawdata['ticker'].tolist()))
 '''
