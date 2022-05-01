@@ -3,7 +3,7 @@
 """
 Created on Sun Apr 17 18:27:09 2022
 
-@author: potatobook
+@author: HUNG Pui Kit
 """
 import yfinance as yf
 import pandas as pd
