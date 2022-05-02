@@ -160,7 +160,7 @@ print('export complete')
 
 # Modify the file
 export_name = 'Reddit WSB Data with all comments ' + from_date + ' to ' + to_date + '.csv'
-posts = pd.read_csv(base_path + os.sep + export_name)
+posts_mod = pd.read_csv(base_path + os.sep + export_name)
 
 posts_mod['upvotes'] = posts_mod['upvotes'].astype(int)
 # Keep comments with highest upvote only
