@@ -76,7 +76,7 @@ df_concat.to_csv('reddit_with_ticker_with_sentiment.csv')
 
 My next step was to incorporate the various metrics I had on post popularity into the overall sentiment score. I took a look at the metrics shown below and found a certain distinction to categorize them - homogeneous and heterogeneous. 
 
-![Metric Visualization]({static}/Blog Posts/Metric_Visualization.png)
+![Metric Visualization]({static}/Blog%20Posts/Metric_Visualization.png)
 
 An example of a homogeneous metric would be the upvote ratio, which is evenly spread out between 0 and 1. While heterogeneous metrics include number of comments and number of upvotes, with the majority of posts having only single-digit counts, but a few having extremely high counts. 
 
@@ -178,7 +178,7 @@ df.to_csv("Updated_Data.csv")
 
 An illustration of the sentiment updating is given below.
 
-![Result Illustration]({static}/Blog Posts/Result_Illustration.png)
+![Result Illustration]({static}/Blog%20Posts/Result_Illustration.png)
 
 ## Final Thoughts
 
