@@ -7,6 +7,8 @@ This project aims to analyze the correlation between the sentiment of r/wallstre
 # Steps
 1. [Data Sourcing Reddit Posts](https://buehlmaier.github.io/FINA4350-student-blog-2022-01/project-introduction-and-step-1-data-collecting-and-storage-group-simplicity.html)
 2. [Cleaning Data and Identifying Stock](https://buehlmaier.github.io/FINA4350-student-blog-2022-01/cleaning-data-and-identifying-stock-group-simplicity.html)
-3. Conducting Sentiment Analysis
-4. Visualizing Correlation and Prediction
+3. [Conducting Sentiment Analysis and Metric Incorporation](https://buehlmaier.github.io/FINA4350-student-blog-2022-01/sentiment-analysis-and-metric-incorporation-group-simplicity.html)
+4. [Visualizing Correlation and Prediction](https://buehlmaier.github.io/FINA4350-student-blog-2022-01/correlation-analysis-group-simplicity.html)
 
+# Short Conclusion
+In short, there is a very low correlation between r/WSB sentiment and stock returns. Basically, it means that if there is a strong sentiment (with incorporated upvotes, comments that emphasizes the score), the stock return will not be greatly or significantly positive (sometimes even negative!), and vice versa. When conducting our extension via back-testing, if we were to follow the sentiment score produced and traded based on that score, we would ultimately lose money. However, if we did the reverse, meaning if the score was more positive indicating a stronger buy, and we sell instead, then we would actually profit! This may actually feed into the conspiracy that stronger financial players are playing WSB like Belfort playing wolf.
